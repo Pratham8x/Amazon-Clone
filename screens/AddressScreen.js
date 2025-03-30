@@ -24,15 +24,29 @@ const AddressScreen = () => {
   const [postalCode, setPostalCode] = useState("");
   const {userId,setUserId} = useContext(UserType)
   useEffect(() => {
-    const fetchUser = async() => {
+    const fetchUser = async () => {
+      try {
         const token = await AsyncStorage.getItem("authToken");
+        if (!token) {
+          console.log("No auth token found");
+          return;
+        }
+  
         const decodedToken = jwt_decode(token);
-        const userId = decodedToken.userId;
-        setUserId(userId)
-    }
-
+        if (!decodedToken || !decodedToken.userId) {
+          console.log("Invalid token format");
+          return;
+        }
+  
+        setUserId(decodedToken.userId);
+      } catch (error) {
+        console.log("Error decoding token:", error);
+      }
+    };
+  
     fetchUser();
-  },[]);
+  }, []);
+  
   console.log(userId)
   const handleAddAddress = () => {
       const address = {
@@ -44,7 +58,7 @@ const AddressScreen = () => {
           postalCode
       }
 
-      axios.post("http://localhost:8000/addresses",{userId,address}).then((response) => {
+      axios.post("http://172.16.2.9:8000/addresses",{userId,address}).then((response) => {
           Alert.alert("Success","Addresses added successfully");
           setName("");
           setMobileNo("");
@@ -216,4 +230,3 @@ const AddressScreen = () => {
 
 export default AddressScreen;
 
-const styles = StyleSheet.create({});

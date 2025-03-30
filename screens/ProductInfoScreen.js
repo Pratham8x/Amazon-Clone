@@ -193,7 +193,7 @@ const ProductInfoScreen = () => {
           <Ionicons name="location" size={24} color="black" />
 
           <Text style={{ fontSize: 15, fontWeight: "500" }}>
-            Deliver To Sujan - Bangalore 560019
+            Deliver To Pratham - New Delhi 110044
           </Text>
         </View>
       </View>

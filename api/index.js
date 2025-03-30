@@ -37,7 +37,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
     service: "gmail",
     auth: {
       user: "pandeypratham***@gmail.com",
-      pass: "*************",
+      pass: "**********",
     },
   });
 
@@ -173,13 +173,13 @@ app.post("/addresses", async (req, res) => {
 
     res.status(200).json({ message: "Address created Successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Error addding address" });
+    res.status(500).json({ message: "Error adding address" });
   }
 });
 
 //endpoint to get all the addresses of a particular user
 app.get("/addresses/:userId", async (req, res) => {
-  try {
+  try { 
     const userId = req.params.userId;
 
     const user = await User.findById(userId);
@@ -190,7 +190,7 @@ app.get("/addresses/:userId", async (req, res) => {
     const addresses = user.addresses;
     res.status(200).json({ addresses });
   } catch (error) {
-    res.status(500).json({ message: "Error retrieveing the addresses" });
+    res.status(500).json({ message: "Error retrieving the addresses" });
   }
 });
 

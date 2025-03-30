@@ -30,7 +30,7 @@ const RegisterScreen = () => {
 
     // send a POST  request to the backend API to register the user
     axios
-      .post("http://172.16.2.11:8000/register", user)
+      .post("http://172.16.2.9:8000/register", user)
       .then((response) => {
         console.log(response);
         Alert.alert(
@@ -227,4 +227,3 @@ const RegisterScreen = () => {
 };
 
 export default RegisterScreen;
-

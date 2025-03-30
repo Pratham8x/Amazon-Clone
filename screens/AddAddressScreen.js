@@ -5,6 +5,7 @@ import {
   ScrollView,
   Pressable,
   TextInput,
+  TouchableOp
 } from "react-native";
 import React, { useEffect, useContext, useState, useCallback } from "react";
 import { Feather, AntDesign } from "@expo/vector-icons";
@@ -20,25 +21,54 @@ const AddAddressScreen = () => {
   const { userId, setUserId } = useContext(UserType);
   console.log("userId", userId);
   useEffect(() => {
+    if (!userId) {
+      // User is not authenticated, redirect to login
+      Alert.alert("Authentication Required", "Please log in to view your addresses");
+      navigation.navigate("Login"); // Replace with your login screen name
+      return;
+    }
+    
     fetchAddresses();
-  }, []);
+  }, [userId, navigation]);
+  const handleRemoveAddress = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/addresses/${id}`);
+      fetchAddresses(); // Refresh the list after deletion
+    } catch (error) {
+      console.error("Failed to remove address:", error?.response?.data || error.message);
+    }
+  };
+  
+
   const fetchAddresses = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:8000/addresses/${userId}`
       );
       const { addresses } = response.data;
-
-      setAddresses(addresses);
+      setAddresses(addresses || []);
     } catch (error) {
-      console.log("error", error);
+      console.log("Error fetching addresses:", error);
+      
+      // Check for authentication errors (401 Unauthorized)
+      if (error.response && error.response.status === 401) {
+        Alert.alert("Authentication Error", "Your session has expired. Please log in again.");
+        // Clear user context/session
+        setUserId(null);
+        navigation.navigate("Login");
+      } else {
+        Alert.alert("Error", "Failed to load addresses. Please try again.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
   //refresh the addresses when the component comes to the focus ie basically when we navigate back
   useFocusEffect(
     useCallback(() => {
       fetchAddresses();
-    }, [])
+    }, [userId])
   );
   console.log("addresses", addresses);
   return (

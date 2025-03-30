@@ -373,7 +373,7 @@ const HomeScreen = () => {
                 </Text>
               ) : (
                 <Text style={{ fontSize: 13, fontWeight: "500" }}>
-                  Add a Address
+                 Delivered to Pratham - New Delhi 110044
                 </Text>
               )}
             </Pressable>

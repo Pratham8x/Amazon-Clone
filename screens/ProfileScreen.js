@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React, { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -53,7 +54,7 @@ const ProfileScreen = () => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/profile/${userId}`
+          `http://172.16.2.9:8000/profile/${userId}`
         );
         const { user } = response.data;
         setUser(user);
@@ -76,7 +77,7 @@ const ProfileScreen = () => {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/orders/${userId}`
+          `http://172.16.2.9:8000/orders/${userId}`
         );
         const orders = response.data.orders;
         setOrders(orders);
@@ -104,7 +105,8 @@ const ProfileScreen = () => {
           marginTop: 12,
         }}
       >
-        <Pressable
+        <TouchableOpacity
+        onPress={() =>{navigation.navigate("Cart")}}
           style={{
             padding: 10,
             backgroundColor: "#E0E0E0",
@@ -113,9 +115,10 @@ const ProfileScreen = () => {
           }}
         >
           <Text style={{ textAlign: "center" }}>Your orders</Text>
-        </Pressable>
+        </TouchableOpacity>
 
-        <Pressable
+        <TouchableOpacity
+        onPress={()=>{navigation.navigate("Home")}}
           style={{
             padding: 10,
             backgroundColor: "#E0E0E0",
@@ -124,7 +127,7 @@ const ProfileScreen = () => {
           }}
         >
           <Text style={{ textAlign: "center" }}>Your Account</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       <View
@@ -135,7 +138,8 @@ const ProfileScreen = () => {
           marginTop: 12,
         }}
       >
-        <Pressable
+        <TouchableOpacity
+        onPress= {() =>{ navigation.navigate("Home")}}
           style={{
             padding: 10,
             backgroundColor: "#E0E0E0",
@@ -144,9 +148,9 @@ const ProfileScreen = () => {
           }}
         >
           <Text style={{ textAlign: "center" }}>Buy Again</Text>
-        </Pressable>
+        </TouchableOpacity>
 
-        <Pressable
+        <TouchableOpacity
           onPress={logout}
           style={{
             padding: 10,
@@ -156,7 +160,7 @@ const ProfileScreen = () => {
           }}
         >
           <Text style={{ textAlign: "center" }}>Logout</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -197,5 +201,3 @@ const ProfileScreen = () => {
 };
 
 export default ProfileScreen;
-
-const styles = StyleSheet.create({});
